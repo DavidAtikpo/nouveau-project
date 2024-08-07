@@ -1,14 +1,15 @@
-// router/index.js
-const { createRouter, createWebHistory } = require('vue-router');
-const HomePage = require('@/views/HomePage.vue').default;
-const Login = require('@/views/LoginView.vue').default;
-const Register = require('@/views/RegisterView.vue').default;
-const userDashboard = require('@/views/userDashboard.vue').default;
-const adminDashboard = require('@/views/adminDashboard.vue').default;
-const ChildPicture = require('@/components/uploadChildPictureComponent.vue').default;
+import { createRouter, createWebHistory } from 'vue-router';
+
+// Lazy load components using dynamic imports
+const HomePage = () => import('@/views/HomePage.vue');
+const Login = () => import('@/views/LoginView.vue');
+const Register = () => import('@/views/RegisterView.vue');
+const UserDashboard = () => import('@/views/userDashboard.vue');
+const AdminDashboard = () => import('@/views/adminDashboard.vue');
+const ChildPicture = () => import('@/components/uploadChildPictureComponent.vue');
 
 const router = createRouter({
-  history: createWebHistory('/'), // Remplacez `import.meta.env.BASE_URL` par '/'
+  history: createWebHistory('/'), 
   routes: [
     {
       path: '/',
@@ -28,12 +29,12 @@ const router = createRouter({
     {
       path: '/user/:id',
       name: 'userDashboard',
-      component: userDashboard,
+      component: UserDashboard,
     },
     {
       path: '/admin/:id',
       name: 'adminDashboard',
-      component: adminDashboard,
+      component: AdminDashboard,
     },
     {
       path: '/admin/childPicture/:id',
@@ -43,4 +44,4 @@ const router = createRouter({
   ],
 });
 
-module.exports = router;
+export default router; // Use export default instead of module.exports

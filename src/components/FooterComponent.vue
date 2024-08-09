@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <footer class="footer-content">
     <div class="content">
       <div class="link">
@@ -32,11 +32,11 @@
     <div class="copy-right">
       <p>&copy;{{ getYear }} All Rights Reserved | Devoloped By David Atikpo</p>
     </div>
-    <!-- <img class="footer-logo" src="../assets/images/logo.png" /> -->
+    
   </footer>
-</template>
+</template> -->
 
-<script>
+<!-- <script>
 export default {
   data() {
     return {
@@ -120,6 +120,70 @@ h4{
   }
   .content p {
     font-size: 10px;
+  }
+}
+</style> -->
+<template>
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-media">
+        <a href="#"><img src="@/assets/icons/facebook-svgrepo-com.svg" alt="Facebook" /></a>
+        <a href="#"><img src="@/assets/icons/twitter-svgrepo-com.svg" alt="Twitter" /></a>
+        <a href="#"><img src="@/assets/icons/instagram-1-svgrepo-com.svg" alt="Instagram" /></a>
+        <a href="#"><img src="@/assets/icons/whatsapp-svgrepo-com.svg" alt="Instagram" /></a>
+      </div>
+      <div class="contact-info">
+        <p>Email: coordinateurtg213@gmail.com</p>
+        <p>Téléphone: +228 90 70 74 35</p>
+        <p>Adresse: Rue N2, Aneho, LOme-Togo</p>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+export default {
+  name: "FooterComponent",
+};
+</script>
+
+<style scoped>
+.footer {
+  background-color: #16325b;
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.social-media a {
+  display: inline-block;
+  margin: 0 0.5rem;
+}
+
+.social-media img {
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.social-media a:hover img {
+  transform: scale(1.1);
+}
+
+.contact-info p {
+  margin: 0.5rem 0;
+}
+
+@media only screen and (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
   }
 }
 </style>

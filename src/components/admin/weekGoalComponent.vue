@@ -1,6 +1,8 @@
 <template>
   <div class="page">
     <div class="container">
+      <TypewriterText class="typewriter" text="Remplissez l'objectif de la journée en suivant ces étapes..." />
+      <div class="content-wrapper">
       <div class="content">
         <h2>Définir l'objectif pour la Semaine</h2>
         <hr>
@@ -19,6 +21,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 
@@ -26,8 +29,12 @@
   <script>
   import axios from 'axios';
 import { API_BASE_URL } from '@/config.js';
+import TypewriterText from '@/components/TypewriterText.vue';
 
 export default {
+  components :{
+    TypewriterText
+    },
   data() {
     return {
       weeklyGoal: '',
@@ -94,13 +101,29 @@ button {
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 .content {
-  width: 90%;
+  width: 65%;
   max-width: 800px;
   padding: 39px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+}
+.typewriter {
+  position: absolute;
+  width: 30%;
+  padding: 40px;
+  margin-left: 900px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);

@@ -75,9 +75,9 @@
         <button type="submit">Envoyer</button>
       </form>
       <div class="contact-info">
-        <p>Email: contact@compassiontogo.org</p>
-        <p>Téléphone: +228 90 00 00 00</p>
-        <p>Adresse: Avenue de la Musique, Aneho, Togo</p>
+        <p>Email: coordinateur213@gmail.com</p>
+        <p>Téléphone: +228 90 70 74 35</p>
+        <p>Adresse: Rue N2, Aneho , Lome-Togo</p>
       </div>
     </section>
   </div>
@@ -200,7 +200,7 @@ h1 {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   padding: 1.5rem;
-  box-shadow: 0 4px 8px red;
+  box-shadow: 0 4px 8px rgb(41, 40, 40);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
@@ -253,7 +253,7 @@ h1 {
   padding: 2rem;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
-  box-shadow: 0 4px 8px red;
+  /* box-shadow: 0 4px 8px red; */
 }
 
 .about-content {

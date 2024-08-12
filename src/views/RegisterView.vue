@@ -1,9 +1,6 @@
-<template>
-  <div class="page-content">
-    <div class="bg-img" :class="{ blurred: popupVisible }">
-      <img src="../assets/images/351383360_263196149601539_6741866346631895392_n.jpg" alt="Background Image" />
-    </div>
-    <div class="right-content" :class="{ blurred: popupVisible }">
+ <template>
+  <div v-if="popupVisible" class="popup-overlay">
+    <div class="popup-content">
       <div class="nav">
         <a href="/">
           <img class="logo" src="../assets/images/logo.jpeg" alt="Logo" />
@@ -13,9 +10,6 @@
         <div class="form-field">
           <div class="top-content">
             <h2>Enregistrez</h2>
-            <div class="user-pic">
-              <!-- Add a user picture if needed -->
-            </div>
           </div>
           <div class="full-name">
             <div>
@@ -48,34 +42,35 @@
             </div>
           </div>
           <div>
-            <label for="role">Role<span>*</span></label>
-            <input
-              type="text"
-              class="input-field"
-              id="role"
-              required
-              placeholder="ex: Sante, Comptable..."
-              v-model="data.role"
-              @input="clearError('roleExistError')"
-              :class="{ 'is-invalid': roleExistError }"
-            />
-            <div class="error" v-if="roleExistError">{{ roleExistError }}</div>
-          </div>
+  <label for="role">Role<span>*</span></label>
+  <input
+    type="text"
+    class="input-field"
+    id="role"
+    required
+    placeholder="ex: Sante, Comptable..."
+    v-model="data.role"
+    @input="clearError('roleExistError')"
+    :class="{ 'is-invalid': roleExistError }"
+  />
+  <div class="error" v-if="roleExistError">{{ roleExistError }}</div>
+</div>
+
           <div>
-            <label for="email">Email<span>*</span></label>
-            <input
-              type="email"
-              class="input-field"
-              id="email"
-              required
-              placeholder="example@email.com"
-              v-model="data.email"
-              @input="clearError('emailFormatError', 'emailExistError')"
-              :class="{ 'is-invalid': emailFormatError || emailExistError }"
-            />
-            <div class="error" v-if="emailFormatError">{{ emailFormatError }}</div>
-            <div class="error" v-else-if="emailExistError">{{ emailExistError }}</div>
-          </div>
+  <label for="email">Email<span>*</span></label>
+  <input
+    type="email"
+    class="input-field"
+    id="email"
+    required
+    placeholder="example@email.com"
+    v-model="data.email"
+    @input="clearError('emailFormatError', 'emailExistError')"
+    :class="{ 'is-invalid': emailFormatError || emailExistError }"
+  />
+  <div class="error" v-if="emailFormatError">{{ emailFormatError }}</div>
+  <div class="error" v-else-if="emailExistError">{{ emailExistError }}</div>
+</div>
           <div>
             <label for="phone">Téléphone<span>*</span></label>
             <input
@@ -110,45 +105,14 @@
             </div>
             <div class="error" v-if="passwordError">{{ passwordError }}</div>
           </div>
-          <div>
-            <label for="confirm-password">Confirme Mot de passe<span>*</span></label>
-            <div class="password-container">
-              <input
-                class="input-field"
-                :type="confirmPasswordFieldType"
-                id="confirm-password"
-                required
-                placeholder="Confirm password"
-                v-model="data.confirmPassword"
-                @input="clearError('confirmPasswordError')"
-                :class="{ 'is-invalid': confirmPasswordError }"
-              />
-              <i
-                class="toggle-password-icon"
-                :class="{ 'fas fa-eye-slash': !showConfirmPassword, 'fas fa-eye': showConfirmPassword }"
-                @click="toggleConfirmPasswordVisibility"
-              ></i>
-            </div>
-            <div class="error" v-if="confirmPasswordError">{{ confirmPasswordError }}</div>
-          </div>
           <button type="submit">Submit</button>
           <span class="login">Avez-vous déjà un compte? <a @click.prevent="goToLogin" href="#">Connectez</a></span>
         </div>
       </form>
-    </div>
-    <div class="popup" v-if="popupVisible">
-      <img class="check" src="@/assets/images/check.png" alt="Checkmark" />
-      <h2>Sign Up Successful</h2>
-      <p>
-        A verification link has been sent to
-        <span style="font-weight: bold">{{ data.email }}</span>
-      </p>
-      <button @click="closePopup" type="button">OK</button>
+      <!-- <button @click="closePopup" class="close-button">Fermer</button> -->
     </div>
   </div>
 </template>
-
-
 
 <script>
 import axios from 'axios';
@@ -157,9 +121,8 @@ import { API_BASE_URL } from '@/config.js';
 export default {
   data() {
     return {
-      popupVisible: false,
+      popupVisible: true,
       showPassword: false,
-      showConfirmPassword: false,
       data: {
         lastName: '',
         firstName: '',
@@ -167,7 +130,6 @@ export default {
         email: '',
         phoneNumber: '',
         password: '',
-        confirmPassword: ''
       },
       lastNameError: '',
       firstNameError: '',
@@ -176,38 +138,68 @@ export default {
       emailFormatError: '',
       emailExistError: '',
       passwordError: '',
-      confirmPasswordError: ''
     };
   },
   computed: {
     passwordFieldType() {
       return this.showPassword ? 'text' : 'password';
     },
-    confirmPasswordFieldType() {
-      return this.showConfirmPassword ? 'text' : 'password';
-    }
   },
   methods: {
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    toggleConfirmPasswordVisibility() {
-      this.showConfirmPassword = !this.showConfirmPassword;
-    },
     registerStudent() {
-      axios
-        .post(`${API_BASE_URL}/user/register`, this.data)
-        .then((res) => {
-          if (res.status === 201) {
-            this.popupVisible = true;
-            console.log('data',res.data);
+  axios
+    .post(`${API_BASE_URL}/user/register`, this.data)
+    .then((res) => {
+      if (res.status === 201) {
+        this.popupVisible = true;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      if (error.response) {
+        // Gérer les erreurs de validation du serveur (statut 403)
+        if (error.response.status === 403) {
+          const serverErrors = error.response.data.errors;
+
+          if (serverErrors) {
+            if (serverErrors.lastName) {
+              this.lastNameError = serverErrors.lastName;
+            }
+            if (serverErrors.firstName) {
+              this.firstNameError = serverErrors.firstName;
+            }
+            if (serverErrors.role) {
+              this.roleExistError = serverErrors.role;
+            }
+            if (serverErrors.email) {
+              this.emailFormatError = serverErrors.email;
+            }
+            if (serverErrors.phoneNumber) {
+              this.phoneNumberError = serverErrors.phoneNumber;
+            }
+            if (serverErrors.password) {
+              this.passwordError = serverErrors.password;
+            }
           }
-        })
-        .catch((error) => {
-          console.error(error);
-          // Gérer les erreurs d'inscription ici
-        });
-    },
+        } 
+        // Gérer l'erreur email déjà existant (statut 400)
+        else if (error.response.status === 400 && error.response.data.email === 'Email already exists') {
+          this.emailExistError = 'This email is already registered.';
+        } 
+        else if (error.response.status === 400 && error.response.data.role === 'Role already exists') {
+          this.roleExistError = 'This Role already registered.';
+        } 
+        // Gérer d'autres erreurs
+        else {
+          console.error("Une erreur inattendue s'est produite", error);
+        }
+      }
+    });
+},
+
     closePopup() {
       this.popupVisible = false;
       this.$router.push('/login');
@@ -221,12 +213,11 @@ export default {
         email: '',
         phoneNumber: '',
         password: '',
-        confirmPassword: ''
       };
       this.clearAllErrors();
     },
     clearError(...errors) {
-      errors.forEach(error => {
+      errors.forEach((error) => {
         this[error] = '';
       });
     },
@@ -247,100 +238,65 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-.page-content {
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("@/assets/images/pngtree-abstract-white-and-red-geometric-background-picture-image_1867378.jpg");
   display: flex;
-  padding: 0;
-  margin: 0;
-  gap: 3%;
-  height: 100vh;
-}
-
-.blurred {
-  filter: blur(5px);
-}
-
-.bg-img {
-  display: flex;
-  background: black;
-  position: relative;
+  background-size: cover;
   align-items: center;
   justify-content: center;
-  width: 55%;
-  height: 100vh;
 }
 
-.img-text {
-  position: absolute;
-  color: white;
-  font-size: 3.5rem;
-}
-
-.bg-img img {
-  object-fit: cover;
+.popup-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
   width: 100%;
-  height: 100vh;
-  opacity: 0.7;
-}
-
-.right-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 45%;
+  position: relative;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
+  /* margin-bottom: 0px; */
 }
 
 .nav img {
-  height: 80px;
-  width: 80px;
+  height: 60px;
+  width: 60px;
   border-radius: 50%;
 }
 
 .form-field {
-  margin: auto;
-  width: 60%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 }
 
 h2 {
-  font-size: 2rem;
-}
-
-span {
-  color: red;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
 }
 
 label {
   font-size: 1rem;
+  margin-bottom: 5px;
 }
 
 .input-field {
   width: 100%;
-  padding: 8px 12px;
-  font-size: 1.rem;
-  border: 1px solid grey;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  margin-top: 5px;
-}
-
-.name {
-  width: 95%;
 }
 
 .password-container {
@@ -363,13 +319,13 @@ label {
 button {
   width: 100%;
   padding: 10px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   background: #090255;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -387,46 +343,18 @@ button:hover {
   cursor: pointer;
 }
 
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  border-radius: 5px;
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
 }
 
-.popup img {
-  width: 50px;
-}
-
-@media screen and (max-width: 768px) {
-  .page-content {
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .bg-img {
-    /* width: 100%;
-    height: 40vh; */
-    display: none;
-  }
-
-  .right-content {
-    width: 80%;
-  }
-
-  .form-field {
-    width: 90%;
-  }
-
-  .img-text {
-    font-size: 1.5rem;
-  }
+.close-button:hover {
+  color: red;
 }
 </style>
-

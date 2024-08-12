@@ -1,10 +1,12 @@
 <template>
   <header class="header">
-    <a href="#" class="logo"
-      ><img src="../assets/images/logo.jpeg" class="logoimage" alt="CDE koinonia"
-    /></a>
+    <a href="#" class="logo">
+      <img src="../assets/images/logo.jpeg" class="logoimage" alt="CDE koinonia" />
+    </a>
     <input class="menu-btn" type="checkbox" id="menu-btn" />
-    <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+    <label class="menu-icon" for="menu-btn">
+      <span class="navicon"></span>
+    </label>
     <ul class="menu">
       <li class="Home"><a href="#" @click="goToHomePage">Home</a></li>
       <li><a href="#" @click="signIn">Sign In</a></li>
@@ -14,7 +16,7 @@
 </template>
 
 <script>
-module.exports = {
+export default {
   methods: {
     goToHomePage() {
       this.$router.push('/');
@@ -31,15 +33,18 @@ module.exports = {
 
 <style scoped>
 /* header */
-
 .header {
-  background-color: #16325b;
-  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
+  background-image: url('@/assets/images/Screenshot from 2024-08-10 08-42-50.png');
+  background-size: cover;
+  /* background-position: center; */
   width: 100%;
   z-index: 3;
-  /* margin-left: 2.5%; */
-  margin-top: 0%;
   position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid red;
+  border-radius: 0px 0px 20px 20px;
 }
 
 .header ul {
@@ -47,34 +52,36 @@ module.exports = {
   padding: 0;
   list-style: none;
   overflow: hidden;
-  background-color: #f7f1f0;
-  margin-right: 100px;
+  background-color: transparent; /* Set background to transparent */
 }
 
 .header li a {
   display: block;
-  background-color: #16325b;
   padding: 20px 20px;
   text-decoration: none;
   font-weight: bold;
-  color: #f8f8fc;
+  color: #0a0a0a;
 }
 
 .header li a:hover,
 .header .menu-btn:hover {
-  color: #88cc00;
+  color: #db2323;
 }
 
 .header .logo {
   display: block;
   float: left;
-  font-size: 1em;
+  
   padding: 10px 10px;
   text-decoration: none;
 }
 
-/* menu */
+.logoimage {
+  width: 50px;
+  border-radius: 50px 50px;
+}
 
+/* menu */
 .header .menu {
   clear: both;
   max-height: 0;
@@ -82,7 +89,6 @@ module.exports = {
 }
 
 /* menu icon */
-
 .header .menu-icon {
   cursor: pointer;
   display: inline-block;
@@ -92,10 +98,9 @@ module.exports = {
 }
 
 .header .menu-icon .navicon {
-  background: #333;
+  background: #e5e0e0;
   display: block;
   height: 2px;
-  position: relative;
   transition: background 0.2s ease-out;
   width: 18px;
 }
@@ -120,7 +125,6 @@ module.exports = {
 }
 
 /* menu btn */
-
 .header .menu-btn {
   display: none;
 }
@@ -145,13 +149,8 @@ module.exports = {
 .header .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
   top: 0;
 }
-.logoimage {
-  width: 50px;
-  
-}
 
-/* 48em = 768px */
-
+/* Responsive Design */
 @media (min-width: 48em) {
   .header li {
     float: left;
@@ -166,18 +165,6 @@ module.exports = {
   }
   .header .menu-icon {
     display: none;
-  }
-  .Home {
-    order: 1;
-  }
-  .projects {
-    order: 2;
-  }
-  .aboutme {
-    order: 3;
-  }
-  .contactme {
-    order: 4;
   }
 }
 

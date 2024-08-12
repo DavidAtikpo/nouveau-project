@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="overall">
     <div class="login-pic-container" :class="{ blurred: popupVisible }">
       <img class="login-pic" src="@/assets/images/309430577_431589382413805_5270125874633532938_n.jpg" alt="login-picture" />
@@ -64,9 +64,9 @@
       <button @click="closePopup" type="button">OK</button>
     </div>
   </div>
-</template>
+</template> -->
 
-<script>
+<!-- <script>
 import axios from 'axios'
 import {API_BASE_URL}  from '@/config';
 export default {
@@ -99,7 +99,7 @@ export default {
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('user', res.data.firstName);
           if (res.status == 200) {
-            this.popupVisible = true; // Afficher la popup après une connexion réussie
+            this.popupVisible = true;
             if (res.data.role === 'Coordinateur') {
               this.$router.push(`/admin/adminDashboard`);
             } else {
@@ -119,15 +119,15 @@ export default {
       this.errorMessage = ''
     },
     closePopup() {
-      this.popupVisible = false; // Fermer la popup lorsque l'utilisateur clique sur OK
-      this.$router.push('/student/analytics'); // Rediriger l'utilisateur (à adapter selon votre logique)
+      this.popupVisible = false; 
+      this.$router.push('/student/analytics'); 
     }
   }
 }
-</script>
+</script> -->
 
 
-<style scoped>
+<!-- <style scoped>
 .overall {
   display: flex;
   padding: 0;
@@ -136,7 +136,7 @@ export default {
   height: 100vh;
 }
 .blurred {
-  filter: blur(5px); /* adjust the blur amount as needed */
+  filter: blur(5px); 
 }
 
 .login-pic-container {
@@ -146,8 +146,8 @@ export default {
   align-items: center;
   justify-content: center;
   width: 56em;
-  position: relative; /* Assurez-vous que le conteneur est positionné pour que les enfants puissent être positionnés par rapport à lui */
-  overflow: hidden; /* Cachez tout contenu qui dépasse de ce conteneur */
+  position: relative; 
+  overflow: hidden; 
 }
 .login-pic {
   object-fit: cover;
@@ -157,31 +157,29 @@ export default {
   transition: transform 1.5s ease;
 }
 .login-pic:hover {
-  transform: scale(1.9) rotate(5deg); /* Agrandir légèrement et faire pivoter l'image */
+  transform: scale(1.9) rotate(5deg);
 }
 
-/* Ajoutez également un effet de mouvement continu */
+
 @keyframes move {
   0% {
-    transform: translateX(0); /* Pas de mouvement initial */
+    transform: translateX(0); 
   }
   50% {
-    transform: translateX(50px); /* Mouvement vers la droite */
+    transform: translateX(50px); 
   }
   100% {
-    transform: translateX(0); /* Retour à la position initiale */
+    transform: translateX(0);
   }
 }
 
-/* Appliquez l'animation continue à l'image */
+
 .login-pic.animated {
-  animation: move 2s infinite; /* Exécutez l'animation indéfiniment */
+  animation: move 2s infinite; 
 }
 
 .login-intro {
   position: absolute;
-  /* top: 50%;
-  left: 16.188rem; */
   color: white;
   font-size: 3.5rem;
 }
@@ -197,10 +195,7 @@ export default {
   width: 100px;
   
 }
-/* .user-logo {
-  padding-top: 1rem;
-  border-radius: 30px;
-} */
+
 
 .login-user {
   padding-top: 0.313rem;
@@ -352,7 +347,7 @@ label {
   color: #06d73a;
 }
 
-/* Mobile View */
+
 @media only screen and (max-width: 600px) {
   .overall {
     display: flex;
@@ -363,7 +358,7 @@ label {
     display: none;
   }
   .login-logo {
-    /* padding-right: 0; */
+    
     padding-top: 0rem;
     margin-bottom: 4rem;
     width: 100px;
@@ -448,27 +443,293 @@ label {
 }
 
 .fas {
-  color: #333; /* Change the color of the icon */
-  font-size: 24px; /* Change the size of the icon */
+  color: #333; 
+  font-size: 24px;
 }
 
-/* Style for the spinning circle icon */
+
 .fa-circle-notch {
-  color: #06d73a; /* Change the color of the spinning circle */
+  color: #06d73a; 
 }
 
-/* Style for the spinning animation */
+
 .fa-spin {
-  animation: spin 2s linear infinite; /* Add spinning animation */
+  animation: spin 2s linear infinite; 
 }
 
-/* Define the spinning animation */
+
 @keyframes spin {
   from {
-    transform: rotate(0deg); /* Start rotating from 0 degrees */
+    transform: rotate(0deg); 
   }
   to {
-    transform: rotate(360deg); /* Rotate to 360 degrees */
+    transform: rotate(360deg);
   }
+}
+</style> -->
+
+<template>
+  <div class="overall">
+    <!-- Removed the login-pic-container -->
+    <div class="login-container">
+      <div>
+        <a href="http://localhost:8080/">
+          <img class="login-logo" src="@/assets/images/logo.jpeg" alt="logo" />
+        </a>
+      </div>
+      <h2 class="login-title">Connectez ici</h2>
+      <form class="login-form" @submit.prevent="handleLogin">
+        <input
+          v-model="loginData.email"
+          class="form-input"
+          type="email"
+          name="email"
+          placeholder="Email"
+          @input="clearError"
+          required
+        />
+        <div class="password-container">
+          <input
+            id="password"
+            class="form-input inner-pswd"
+            :type="showPassword ? 'text' : 'password'"
+            name="password"
+            v-model="loginData.password"
+            placeholder="Password"
+            :class="{ 'is-invalid': errorMessage }"
+            @input="clearError"
+            required
+          />
+          <i
+            class="toggle-password-icon"
+            :class="{ 'fas fa-eye-slash': !showPassword, 'fas fa-eye': showPassword }"
+            @click="togglePasswordVisibility"
+          >
+          </i>
+        </div>
+        <span class="error" v-if="errorMessage">{{ errorMessage }}</span>
+        <div>
+          <a class="forgot" @click="gotToForgot">Mot de passe oublié?</a>
+        </div>
+
+        <button class="form-button" type="submit" @click="handleLogin" :disabled="loading">
+          <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>
+          <span v-else>Connecter</span>
+        </button>
+        <div class="login-p">
+          Vous n'avez pas de compte?
+          <a @click="goToRegister" class="sign-up-link" href="#">Inscription</a>
+        </div>
+      </form>
+    </div>
+    <div class="popup" id="popup">
+      <img class="check" src="@/assets/images/check.png" />
+      <h2>Login was successful</h2>
+      <button @click="closePopup" type="button">OK</button>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+import { API_BASE_URL } from '@/config';
+export default {
+  data() {
+    return {
+      loading: false,
+      showPassword: false,
+      popupVisible: false,
+      loginData: {
+        email: '',
+        password: ''
+      },
+      errorMessage: ''
+    }
+  },
+  methods: {
+    gotToForgot() {
+      this.$router.push('/forgot')
+    },
+    goToRegister() {
+      this.$router.push('/user/signup')
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword
+    },
+    handleLogin() {
+      this.loading = true;
+      axios.post(`${API_BASE_URL}/user/login`, this.loginData, { withCredentials: true })
+        .then((res) => {
+          localStorage.setItem('token', res.data.token);
+          localStorage.setItem('user', res.data.firstName);
+          if (res.status == 200) {
+            this.popupVisible = true; // Afficher la popup après une connexion réussie
+            if (res.data.role === 'Coordinateur') {
+              this.$router.push(`/admin/adminDashboard`);
+            } else {
+              this.$router.push(`/user/suivi`);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log( error.response.data.error);
+          
+          
+          console.log('Error submitting login:', error);
+          this.errorMessage = error.response.data.error;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    clearError() {
+      this.errorMessage = ''
+    },
+    closePopup() {
+      this.popupVisible = false; // Fermer la popup lorsque l'utilisateur clique sur OK
+      this.$router.push('/student/analytics'); // Rediriger l'utilisateur (à adapter selon votre logique)
+    }
+  }
+}
+</script>
+
+<style scoped>
+.overall {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url("@/assets/images/pngtree-abstract-white-and-red-geometric-background-picture-image_1867378.jpg");
+  background-size: cover;
+}
+
+.login-container {
+  text-align: center;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-title {
+  color: #1f2bd3;
+  font-size: 2.25rem;
+  padding-top: 0.625rem;
+}
+
+.login-logo {
+  width: 80px;
+  margin-bottom: 1.5rem;
+}
+
+.form-input {
+  width: 100%;
+  height: 2.844rem;
+  padding-left: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 0.25em;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.875rem;
+  cursor: pointer;
+}
+
+.form-button {
+  width: 100%;
+  height: 3rem;
+  border: none;
+  background-color: #1f2bd3;
+  border-radius: 0.25em;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.form-button:hover {
+  background-color: #06d73a;
+}
+
+.error {
+  display: block;
+  font-size: 1rem;
+  margin-top: 1px;
+  color: red;
+}
+
+.forgot {
+  color: black;
+  text-decoration: none;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.forgot:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.sign-up-link {
+  color: #1f2bd3;
+  font-weight: 900;
+  font-size: 1rem;
+  text-decoration: underline;
+  margin-top: 1rem;
+}
+
+.sign-up-link:hover {
+  color: #06d73a;
+}
+
+.popup {
+  width: 400px;
+  background: #fff;
+  border-radius: 6px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  text-align: center;
+  padding: 0 30px 30px;
+  color: #333;
+  visibility: hidden;
+  z-index: 1;
+  transition: transform 0.4s, top 0.4s;
+}
+
+.open-popup {
+  visibility: visible;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.popup h2 {
+  font-size: 38px;
+  font-weight: 500;
+  margin: 30px 0 10px;
+}
+
+.popup button {
+  width: 30%;
+  margin-top: 50px;
+  padding: 10px 0;
+  background: #32c671;
+  color: #fff;
+  border: 0;
+  outline: none;
+  font-size: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 </style>

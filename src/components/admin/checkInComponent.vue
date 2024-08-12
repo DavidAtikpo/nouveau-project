@@ -1,12 +1,18 @@
 <template>
   <div :class="[theme, 'page']">
     <div class="container">
+       <!-- Description avec l'effet de machine à écrire -->
+      
+        <TypewriterText class="typewriter" text="Remplissez l'objectif de la journée en suivant ces étapes..." />
+      
+<div class="content-wrapper">
       <div class="content">
         <h2>{{ translatedTitle }}</h2>
         <hr>
         <div class="goal">
           <p>{{ dailyGoals }}</p>
         </div>
+
         <div class="input-group">
           <label for="arrivalTime">Temps d'arrivée au service:</label><br>
           <input type="text" id="arrivalTime" v-model="arrivalTime" readonly>
@@ -34,14 +40,19 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { mapState } from 'vuex';
 import { API_BASE_URL } from '@/config.js';
+import TypewriterText from '@/components/TypewriterText.vue';
 
 export default {
+  components: {
+    TypewriterText
+  },
   data() {
     return {
       arrivalTime: '',
@@ -174,13 +185,29 @@ export default {
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
 }
 .content {
-  width: 90%;
+  width: 65%;
   max-width: 800px;
   padding: 39px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.typewriter {
+  position: absolute;
+  width: 20%;
+  padding: 40px;
+  margin-left: 900px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);

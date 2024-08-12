@@ -1,20 +1,22 @@
 <template>
   <div>
-    <component :is="NavigationComponent"></component>
-    <component :is="TestimonialComponent"></component>
-    <component :is="FooterComponent"></component>
+    <NavigationComponent />
+    <TestimonialComponent />
+    <FooterComponent />
   </div>
 </template>
 
 <script>
+import NavigationComponent from '@/components/NavigationComponent.vue';
+import TestimonialComponent from '@/components/TestimonialComponent.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
+
 export default {
-  data() {
-    return {
-      NavigationComponent: require('../components/NavigationComponent.vue').default,
-      TestimonialComponent: require('@/components/TestimonialComponent.vue').default,
-      FooterComponent: require('../components/FooterComponent.vue').default,
-    };
-  },
+  components: {
+    NavigationComponent,
+    TestimonialComponent,
+    FooterComponent
+  }
 };
 </script>
 

@@ -1,4 +1,14 @@
 <template>
+   <div class="container">
+    <div class="text">
+      <!-- First Text -->
+      <h2 v-if="currentText == 0"><TypewriterText class="typewriter" text="CDE 213 Aneho Togo Nlessi" /></h2>
+      <!-- Second Text -->
+      <p v-if="currentText == 2">Délivrer les enfants de la pauvrete</p>
+      <!-- Third Text -->
+      <h3 v-if="currentText == 1"> CDE KOINONIA </h3>
+    </div>
+  </div>
   <div class="page-content">
     <h1>Réalisations Musicales de Compassion Togo Aneho Nlessi</h1>
     <div class="content">
@@ -22,7 +32,7 @@
     <section class="about-us" id="about">
       <h2>À Propos de Nous</h2>
       <div class="about-content">
-        <img src="" alt="Notre Équipe" class="about-image" />
+        <img src="../assets/images/355713643_608254518080623_8305770702300599736_n.jpg" alt="Notre Équipe" class="about-image" />
         <div class="about-text">
           <p>
             Compassion Togo est dédiée à aider les jeunes à découvrir et développer leurs talents dans la musique.
@@ -40,7 +50,7 @@
       <h2>Nos Programmes</h2>
       <div class="program-list">
         <div class="program-item" v-for="(program, index) in programs" :key="index">
-          <img :src="program.image" :alt="program.title" />
+          <img :src="program.image" :alt="program.title" class="program-photo" />
           <h3>{{ program.title }}</h3>
           <p>{{ program.description }}</p>
         </div>
@@ -49,9 +59,13 @@
 
     <section class="photo-gallery" id="gallery">
       <h2>Galerie de Photos</h2>
-      <div class="gallery-grid">
-        <img v-for="(photo, index) in photos" :src="photo.src" :alt="'Événement ' + (index + 1)" :key="index" class="gallery-item" />
-      </div>
+      <vue-magnific-popup>
+        <div class="gallery-grid">
+          <a v-for="(photo, index) in photos" :key="index" :href="photo.src" class="gallery-item">
+            <img :src="photo.src" :alt="'Événement ' + (index + 1)" />
+          </a>
+        </div>
+      </vue-magnific-popup>
     </section>
 
     <section class="upcoming-events" id="events">
@@ -61,7 +75,9 @@
           <h3>{{ event.title }}</h3>
           <p>Date: {{ event.date }}</p>
           <p>Lieu: {{ event.location }}</p>
-          <button class="event-button">S'inscrire</button>
+          <button class="event-button">
+            <a href="#" @click="signIn">S'inscrire</a>
+          </button>
         </div>
       </div>
     </section>
@@ -84,56 +100,68 @@
 </template>
 
 <script>
+// import VueMagnificPopup from 'vue-magnific-popup';
+// import 'magnific-popup/dist/magnific-popup.css';
+
+import TypewriterText from '@/components/TypewriterText.vue';
 export default {
   name: "MainContent",
+  components:{
+    
+    // VueMagnificPopup,
+  
+    TypewriterText
+  },
   data() {
     return {
-      testimonials: [
+      currentText :0,
+
+            testimonials: [
         {
-          name: "Jean Doe",
-          message: "Grâce à Compassion Togo, j'ai découvert mon talent pour la musique. Ils m'ont aidé à m'entraîner et à améliorer mes compétences. Aujourd'hui, je suis capable de jouer plusieurs instruments.",
-          image: "@/assets/images/348955217_778152960616511_1981663321848763521_n.jpg",
+          name: "Yayra POLO",
+          message: "Grâce à Compassion Togo, j'ai découvert mon talent pour la musique. Ils m'ont aidé à m'entraîner et à améliorer mes compétences. Aujourd'hui, je suis capable de chanter devant un public.",
+          image: require('@/assets/images/Screenshot from 2024-08-16 03-50-44.png'),
         },
         {
-          name: "Marie Koffi",
+          name: "Pauline GBETOUNOU",
           message: "Compassion Togo m'a donné l'opportunité de développer mes talents en chant. Leur soutien et encouragement m'ont permis de chanter avec confiance devant un public.",
-          image: "@/assets/images/309084922_431587569080653_7848551493997462143_n.jpg",
+          image: require('@/assets/images/Screenshot from 2024-08-16 03-50-01.png'),
         },
         {
           name: "Kofi Mensah",
           message: "Participer aux ateliers de musique organisés par Compassion Togo m'a permis d'améliorer mes compétences en composition musicale. Je suis maintenant capable de créer mes propres morceaux.",
-          image: "@/assets/images/309430577_431589382413805_5270125874633532938_n.jpg",
+          image: require('@/assets/images/309430577_431589382413805_5270125874633532938_n.jpg'),
         },
         {
           name: "Adjoa Agbeko",
           message: "Compassion Togo m'a appris à jouer de la guitare. Leur dévouement à aider les jeunes à développer leurs talents musicaux est incroyable.",
-          image: "@/assets/images/379063963_653750866864321_1198646998069922534_n.jpg",
+          image: require('@/assets/images/379063963_653750866864321_1198646998069922534_n.jpg'),
         },
       ],
       programs: [
         {
           title: "Atelier de Musique",
           description: "Apprenez à jouer d'un instrument et à composer vos propres morceaux avec notre équipe d'experts en musique.",
-          // image: "@/assets/images/music-workshop.jpg",
+          image: require('@/assets/images/Screenshot from 2024-08-16 03-54-36.png'),
         },
         {
           title: "Entraînement Vocal",
           description: "Développez vos compétences vocales grâce à nos cours personnalisés qui vous aident à atteindre de nouvelles hauteurs.",
-          // image: "@/assets/images/vocal-training.jpg",
+          image: require('@/assets/images/Screenshot from 2024-08-16 03-50-44.png'),
         },
         {
-          title: "Chorale",
-          description: "Rejoignez notre chorale et chantez avec d'autres passionnés de musique, en partageant des moments inoubliables.",
-          // image: "@/assets/images/choir.jpg",
+          title: "Foot",
+          description: "Une equipe femine tres competente  en partage des moments inoubliables.",
+          image: require('@/assets/images/419124740_719134673659273_130166699053893667_n.jpg'),
         },
       ],
       photos: [
-        { src: "@/assets/images/309084922_431587569080653_7848551493997462143_n.jpg" },
-        { src: "@/assets/images/photo2.jpg" },
-        { src: "@/assets/images/photo3.jpg" },
-        { src: "@/assets/images/photo4.jpg" },
-        { src: "@/assets/images/photo5.jpg" },
-        { src: "@/assets/images/photo6.jpg" },
+        { src: require('@/assets/images/309084922_431587569080653_7848551493997462143_n.jpg') },
+        { src: require('@/assets/images/414067493_709542027951871_8960487969138995909_n.jpg') },
+        { src: require('@/assets/images/348955217_778152960616511_1981663321848763521_n.jpg') },
+        { src: require('@/assets/images/351383360_263196149601539_6741866346631895392_n.jpg') },
+        { src: require('@/assets/images/309430577_431589382413805_5270125874633532938_n.jpg') },
+        { src: require('@/assets/images/419124740_719134673659273_130166699053893667_n.jpg') },
       ],
       events: [
         {
@@ -149,6 +177,17 @@ export default {
       ],
     };
   },
+  mounted() {
+    setInterval(() => {
+      this.currentText = (this.currentText + 1) % 3;
+    }, 5000);
+  },
+  methods: {
+    signIn() {
+      this.$router.push('/login');
+    }
+    
+  } 
 };
 </script>
 
@@ -160,9 +199,7 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 3rem;
-  padding-top: 3em;
-  padding-block: 3em;
-  min-height: 100vh;
+  min-height: 200vh;
 }
 
 h1 {
@@ -172,6 +209,79 @@ h1 {
   color: #fff;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes backgroundCycle {
+  0% {
+    background-image: url('@/assets/images/20220902_080000.jpg');
+  }
+  33% {
+    background-image: url('@/assets/images/2022-09-07.jpg');
+  }
+  66% {
+    background-image: url('@/assets/images/419124740_719134673659273_130166699053893667_n.jpg');
+  }
+  100% {
+    background-image: url('@/assets/images/2024-08-07.jpg');
+  }
+}
+
+@keyframes slideUp {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(200%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 2;
+    transform: translateY(0);
+  }
+}
+
+.typewriter {
+  position: absolute;
+  font-size: 3rem;
+  width: 23%;
+  padding: 40px;
+  color: #f8f9fa;
+  margin-left: 900px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  margin-top: 5rem;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  /* background-position: center; */
+  animation: backgroundCycle 15s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* flex-direction: column; */
+  /* align-items: center; */
+  padding: 2.3rem;
+}
+
+.text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
+.text h2,
+.text h3,
+.text p {
+  margin-top: -300px;
+  font-size: 3rem;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  animation: slideUp 2s ease forwards;
+  transform: translateY(100%);
 }
 
 .content {
@@ -217,6 +327,14 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.program-photo {
+  width: 200px;
+  height: 150px;
+  border-radius: 10%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
 .profile-pic img {
   width: 60px;
   height: 60px;
@@ -249,11 +367,10 @@ h1 {
 .contact-us {
   margin-top: 3rem;
   width: 100%;
-  max-width: 1200px;
+  /* max-width: 1100px; */
   padding: 2rem;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(155, 144, 144, 0.9);
   border-radius: 10px;
-  /* box-shadow: 0 4px 8px red; */
 }
 
 .about-content {
@@ -275,7 +392,7 @@ h1 {
 }
 
 .program-item {
-  width: 300px;
+  width: 200px;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   padding: 1.5rem;
@@ -289,12 +406,18 @@ h1 {
   gap: 1rem;
 }
 
-.gallery-item {
+.gallery-item img {
   width: 100%;
   height: 150px;
   object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 2px 4px red;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
 }
 
 .event-list {
@@ -351,7 +474,7 @@ h1 {
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 5px ;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -360,13 +483,34 @@ h1 {
   background-color: #0056b3;
 }
 
+/* Responsive Styles */
 @media only screen and (max-width: 600px) {
   .page-content {
     padding: 2rem 1rem;
   }
 
+  .container {
+    padding:  0rem;
+  display: flex;
+  }
+
+  .text h2,
+  .text h3,
+  .text p {
+    font-size: 1rem;
+    margin-top: 0;
+  }
+
   h1 {
     font-size: 2rem;
+  }
+
+  .typewriter {
+    font-size: 1.5rem;
+    width: 90%;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
   }
 
   .rows {
@@ -396,6 +540,39 @@ h1 {
 
   .program-item {
     width: 100%;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .gallery-item img {
+    height: 100px;
+  }
+}
+
+.mySlides {
+  display: none;
+  position: absolute;
+  width: 100%;
+}
+
+.mySlides img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.mySlides.active {
+  display: block;
+  animation: fade 1.5s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 </style>

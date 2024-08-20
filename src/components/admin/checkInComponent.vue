@@ -181,6 +181,14 @@ export default {
   background-color: #fff;
   color: #333;
 }
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .container {
   width: 100%;
   height: 100vh;

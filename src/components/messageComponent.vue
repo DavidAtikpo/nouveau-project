@@ -27,7 +27,6 @@
   </div>
 </template>
 
-
 <script>
 import axios from 'axios';
 import { API_BASE_URL } from '@/config.js';
@@ -115,13 +114,13 @@ export default {
 };
 </script>
 
-
 <style>
+/* General Styles */
 .container {
   background-color: #f0f0f0;
   padding: 20px;
   border-radius: 10px;
-  width: 800px;
+  max-width: 100%;
   margin: auto;
 }
 
@@ -143,6 +142,12 @@ h1, h2 {
   display: flex;
   align-items: center;
   cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.3s;
+}
+
+.user-list li:hover {
+  background-color: #e0e0e0;
 }
 
 .icon {
@@ -152,48 +157,48 @@ h1, h2 {
   margin-right: 10px;
 }
 
+/* Dropdown Styles */
 .dropdown1 {
-  position: absolute;
+  position: relative;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  width: 40%;
+  width: 90%;
   margin-top: 10px;
-  margin-left: 50px;
 }
 
-.dropdown h3 {
+.dropdown1 h3 {
   margin-top: 0;
 }
 
-.dropdown hr {
+.dropdown1 hr {
   margin: 10px 0;
 }
 
-.dropdown ul {
+.dropdown1 ul {
   list-style-type: none;
   padding: 0;
   max-height: 200px;
   overflow-y: auto;
 }
 
-.dropdown ul li {
+.dropdown1 ul li {
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
 }
 
-strong,.You{
+.sent-content {
   text-align: right;
-  color: blue !important;
+  color: green;
 }
 
-strong,.sent{
+.received-content {
   text-align: left;
-  color: green !important;
+  color: blue;
 }
 
 .message-input {
@@ -217,5 +222,35 @@ strong,.sent{
   background-color: #333;
   color: #fff;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.message-input button:hover {
+  background-color: #555;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .user-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dropdown1 {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .message-input {
+    flex-direction: column;
+  }
+
+  .message-input input {
+    margin-bottom: 10px;
+  }
 }
 </style>

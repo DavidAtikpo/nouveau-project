@@ -17,13 +17,13 @@
         </thead>
         <tbody>
           <tr v-for="(user, index) in users" :key="index">
-            <td>{{ user.date }}</td>
-            <td>{{ user.nom }}</td>
-            <td>{{ user.prenom }}</td>
-            <td>{{ user.tel }}</td>
-            <td>{{ user.role }}</td>
-            <td>{{ user.objectif }}</td>
-            <td>{{ user.rapport }}</td>
+            <td data-label ='Date'>{{ user.date }}</td>
+            <td data-label="Nom">{{ user.nom }}</td>
+            <td data-label="Prenom">{{ user.prenom }}</td>
+            <td data-label="Telphone">{{ user.tel }}</td>
+            <td data-label="Role">{{ user.role }}</td>
+            <td data-label="Objectif">{{ user.objectif }}</td>
+            <td data-label="Rapport">{{ user.rapport }}</td>
           </tr>
         </tbody>
       </table>
@@ -50,15 +50,15 @@
           </thead>
           <tbody>
             <tr v-for="(personnel, index) in personnels" :key="index">
-              <td>{{ personnel.nom }}</td>
-              <td>{{ personnel.prenom }}</td>
-              <td>{{personnel.nationalite }}</td>
-              <td>{{ personnel.niveau }}</td>
-              <td>{{ personnel.specialite }}</td>
-              <td>{{ personnel.carte }}</td>
-              <td>{{ personnel.contact }}</td>
-              <td>{{ personnel.email }}</td>
-              <td>{{ personnel.post }}</td>
+              <td data-label="Nom">{{ personnel.nom }}</td>
+              <td data-label="Prenom">{{ personnel.prenom }}</td>
+              <td data-label="Nationalite">{{personnel.nationalite }}</td>
+              <td data-label="Niveau">{{ personnel.niveau }}</td>
+              <td data-label="Specialite">{{ personnel.specialite }}</td>
+              <td data-label="Carte">{{ personnel.carte }}</td>
+              <td data-label="Contact">{{ personnel.contact }}</td>
+              <td data-label="Email">{{ personnel.email }}</td>
+              <td data-label="Post">{{ personnel.post }}</td>
             </tr>
           </tbody>
         </table>
@@ -168,14 +168,16 @@ export default {
 </script>
 
 <style>
-.dark.page{
+.dark.page {
   background-color: #535151;
   color: #fff;
 }
-.light.page{
+
+.light.page {
   background-color: #fff;
   color: #181818;
 }
+
 .user-dashboard {
   margin: 20px;
 }
@@ -188,16 +190,50 @@ table {
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
+  text-align: left;
+}
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    margin-bottom: 15px;
+  }
+
+  td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    text-align: right;
+  }
+
+  td:before {
+    position: absolute;
+    top: 0;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+    content: attr(data-label);
+  }
 }
 
 th {
-  background-color: #535151;
+  background-color: #120edf;
   color: white;
 }
 
-th, td {
-  text-align: left;
-}
 </style>
 
 

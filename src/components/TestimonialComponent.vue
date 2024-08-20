@@ -485,12 +485,10 @@ h1 {
 
 /* Responsive Styles */
 @media only screen and (max-width: 600px) {
-  .page-content {
-    padding: 2rem 1rem;
-  }
 
   .container {
     padding:  0rem;
+    height: 40vh;
   display: flex;
   }
 
@@ -502,7 +500,7 @@ h1 {
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 1rem;
   }
 
   .typewriter {

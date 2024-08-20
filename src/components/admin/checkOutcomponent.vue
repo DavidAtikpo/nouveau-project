@@ -160,6 +160,14 @@ export default {
   justify-content: center;
   align-items: center;
 }
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .content-wrapper {
   display: flex;
   justify-content: space-between;

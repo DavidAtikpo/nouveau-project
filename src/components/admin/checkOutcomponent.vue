@@ -105,7 +105,7 @@ export default {
 
       axios.post(`${API_BASE_URL}/user/rapport`, formData, { headers })
         .then(res => {
-          if (res.status === 200) {
+          if (res.status === 201) {
             this.openPopup();
             setTimeout(() => {
               this.closePopup();

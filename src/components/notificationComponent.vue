@@ -24,7 +24,7 @@
     },
     methods: {
       setupSocket() {
-        const socket = io('http://localhost:4000'); // Remplacez par l'URL de votre backend
+        const socket = io('http://localhost:8000'); // Remplacez par l'URL de votre backend
         socket.on('notification', (notification) => {
           this.notifications.push(notification);
         });

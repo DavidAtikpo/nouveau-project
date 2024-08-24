@@ -54,24 +54,34 @@
         }
   
         axios
-          .post(`${API_BASE_URL}/user/reset-password/${this.$route.params.token}`, {
-            password: this.password
-          })
-          .then((res) => {
-            this.successMessage = 'Password has been reset successfully.';
-            this.passwordError = '';
-            console.log(res.data);
-            
-          })
-          .catch((error) => {
-            this.passwordError = 'Token is invalid or has expired.';
-            console.log(error);
-            
-          });
+  .post(`${API_BASE_URL}/user/reset-password/${this.$route.params.token}`, {
+    password: this.password
+  })
+  .then((res) => {
+    // Handle success
+    this.successMessage = 'Password has been reset successfully.';
+    this.passwordError = ''; // Clear any previous errors
+    console.log(res.data);
+
+    // Optionally reset form fields
+    this.password = ''; 
+  })
+  .catch((error) => {
+    // Handle errors
+    if (error.response && error.response.data) {
+      this.passwordError = error.response.data.error || 'Something went wrong. Please try again.';
+    } else {
+      this.passwordError = 'Token is invalid or has expired.';
+    }
+    console.log(error);
+  });
+
       }
     }
   };
   </script>
+
+  
   <style scoped>
   .reset-password {
     display: flex;

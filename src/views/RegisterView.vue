@@ -1,4 +1,4 @@
-  <template>
+ <template>
   <div v-if="popupVisible" class="popup-overlay">
     <div class="popup-content">
       <div class="nav">
@@ -375,11 +375,5 @@ button:hover {
   color: #ffffff;    /* Ensures the spinner matches your button text color */
   display: inline-block;
   vertical-align: middle;
-}
-</style>
-
-
-.close-button:hover {
-  color: red;
 }
 </style>

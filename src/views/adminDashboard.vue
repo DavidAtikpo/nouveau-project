@@ -1,3 +1,4 @@
+<!-- adminDashboard.vue -->
 <template>
   <div>
     <userDashLayout>
@@ -15,7 +16,7 @@
 
 import userDashLayout from '@/layouts/userDashLayout.vue';
 import adminDashNavbarComponent from '../components/admin/adminDashNavbarComponent.vue';
-import adminDashSidebarComponent from '@/components/admin/adminDashSidebarComponent.vue';
+// import adminDashSidebarComponent from '@/components/admin/adminDashSidebarComponent.vue';
 import childRegInfo from '../components/childRegInfo.vue';
 import suiviComponent from '../components/admin/checkInComponent.vue';
 import suiviOutcomponent from '@/components/admin/checkOutcomponent.vue';

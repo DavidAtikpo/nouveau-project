@@ -171,10 +171,3 @@ label {
 }
 </style>
   
-
-  .submit-button {
-    padding: 0.5rem;
-  }
-}
-</style>
-  

@@ -26,8 +26,11 @@
             />
             <div v-if="passwordError" class="error">{{ passwordError }}</div>
           </div>
-          <button type="submit" class="submit-button">Reset Password</button>
+          <button class="submit-button" type="submit" :disabled="loading">
+          <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>
+          <span v-else>Reset Password</span>
           <div v-if="successMessage" class="success">{{ successMessage }}</div>
+        </button>
         </form>
       </div>
     </div>
@@ -40,6 +43,7 @@
   export default {
     data() {
       return {
+        loading: false,
         password: '',
         confirmPassword: '',
         passwordError: '',
@@ -47,39 +51,44 @@
       };
     },
     methods: {
-      resetPassword() {
+      async resetPassword() {
+        // Validate password and confirmPassword
         if (this.password !== this.confirmPassword) {
           this.passwordError = 'Passwords do not match';
           return;
         }
-  
-        axios
-  .post(`${API_BASE_URL}/user/reset-password/${this.$route.params.token}`, {
-    password: this.password
-  })
-  .then((res) => {
-    // Handle success
-    this.successMessage = 'Password has been reset successfully.';
-    this.passwordError = ''; // Clear any previous errors
-    console.log(res.data);
+        this.loading = true;
+        this.passwordError = ''; // Clear any previous errors
+        this.successMessage = ''; // Clear any previous success messages
+        
+        try {
+          const response = await axios.post(`${API_BASE_URL}/user/reset-password/${this.$route.params.token}`, {
+            password: this.password
+          });
 
-    // Optionally reset form fields
-    this.password = ''; 
-  })
-  .catch((error) => {
-    // Handle errors
-    if (error.response && error.response.data) {
-      this.passwordError = error.response.data.error || 'Something went wrong. Please try again.';
-    } else {
-      this.passwordError = 'Token is invalid or has expired.';
-    }
-    console.log(error);
-  });
+          // Handle success
+          this.successMessage = 'Password has been reset successfully.';
+          console.log(response.data);
 
+          // Optionally reset form fields
+          this.password = '';
+          this.confirmPassword = '';
+
+        } catch (error) {
+          // Handle errors
+          if (error.response && error.response.data) {
+            this.passwordError = error.response.data.error || 'Something went wrong. Please try again.';
+          } else {
+            this.passwordError = 'Token is invalid or has expired.';
+          }
+          console.log(error);
+        } finally {
+          this.loading = false; // Stop spinner after the request
+        }
       }
     }
   };
-  </script>
+</script>
 
   
   <style scoped>

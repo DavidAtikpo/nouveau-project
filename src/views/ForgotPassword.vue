@@ -15,8 +15,11 @@
             />
             <div v-if="emailError" class="error">{{ emailError }}</div>
           </div>
-          <button type="submit" class="submit-button">Send Reset Link</button>
+          <button class="submit-button" type="submit" :disabled="loading">
+          <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>
+          <span v-else>Send Reset Link</span>
           <div v-if="successMessage" class="success">{{ successMessage }}</div>
+        </button> 
         </form>
       </div>
     </div>
@@ -28,6 +31,7 @@
   export default {
     data() {
       return {
+        loading:false,
         email: '',
         emailError: '',
         successMessage: ''
@@ -35,6 +39,7 @@
     },
     methods: {
       requestPasswordReset() {
+        this.loading = true
         axios
           .post(`${API_BASE_URL}/user/forgot-password`, { email: this.email })
           .then((res) => {
@@ -52,7 +57,9 @@
             } else {
               this.emailError = 'Something went wrong. Please try again later.';
             }
-          });
+          }) .finally(() => {
+      this.loading = false;  // Stop spinner after the request
+    });
       }
     }
   };
@@ -157,6 +164,13 @@ label {
   .submit-button {
     font-size: 0.875rem;
   }
+
+  .submit-button {
+    padding: 0.5rem;
+  }
+}
+</style>
+  
 
   .submit-button {
     padding: 0.5rem;

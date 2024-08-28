@@ -1,11 +1,14 @@
- <template>
+  <template>
   <div v-if="popupVisible" class="popup-overlay">
     <div class="popup-content">
       <div class="nav">
         <a href="/">
           <img class="logo" src="../assets/images/logo.jpeg" alt="Logo" />
         </a>
+
       </div>
+     
+
       <form @submit.prevent="registerStudent">
         <div class="form-field">
           <div class="top-content">
@@ -105,11 +108,14 @@
             </div>
             <div class="error" v-if="passwordError">{{ passwordError }}</div>
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" :disabled="loading">
+            <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>
+              <span v-else>Submit</span>
+            </button>
           <span class="login">Avez-vous déjà un compte? <a @click.prevent="goToLogin" href="#">Connectez</a></span>
         </div>
       </form>
-      <!-- <button @click="closePopup" class="close-button">Fermer</button> -->
+      <button @click="closePopup" class="close-button">Fermer</button>
     </div>
   </div>
 </template>
@@ -123,6 +129,7 @@ export default {
     return {
       popupVisible: true,
       showPassword: false,
+      loading:false,
       data: {
         lastName: '',
         firstName: '',
@@ -146,95 +153,100 @@ export default {
     },
   },
   methods: {
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
-    },
-    registerStudent() {
-  axios
-    .post(`${API_BASE_URL}/user/register`, this.data)
-    .then((res) => {
-      if (res.status === 201) {
-        this.popupVisible = true;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      if (error.response) {
-        // Gérer les erreurs de validation du serveur (statut 403)
-        if (error.response.status === 403) {
-          const serverErrors = error.response.data.errors;
-
-          if (serverErrors) {
-            if (serverErrors.lastName) {
-              this.lastNameError = serverErrors.lastName;
-            }
-            if (serverErrors.firstName) {
-              this.firstNameError = serverErrors.firstName;
-            }
-            if (serverErrors.role) {
-              this.roleExistError = serverErrors.role;
-            }
-            if (serverErrors.email) {
-              this.emailFormatError = serverErrors.email;
-            }
-            if (serverErrors.phoneNumber) {
-              this.phoneNumberError = serverErrors.phoneNumber;
-            }
-            if (serverErrors.password) {
-              this.passwordError = serverErrors.password;
-            }
-          }
-        } 
-        // Gérer l'erreur email déjà existant (statut 400)
-        else if (error.response.status === 400 && error.response.data.email === 'Email already exists') {
-          this.emailExistError = 'This email is already registered.';
-        } 
-        else if (error.response.status === 400 && error.response.data.role === 'Role already exists') {
-          this.roleExistError = 'This Role already registered.';
-        } 
-        // Gérer d'autres erreurs
-        else {
-          console.error("Une erreur inattendue s'est produite", error);
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  },
+  registerStudent() {
+    this.loading = true;
+    axios
+      .post(`${API_BASE_URL}/user/register`, this.data)
+      .then((res) => {
+        if (res.status === 201) {
+          this.popupVisible = false; // Masquer la popup après l'inscription
+          this.$router.push('/login'); // Redirection vers la page de connexion
         }
-      }
-    });
-},
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response) {
+          // Gérer les erreurs de validation du serveur (statut 403)
+          if (error.response.status === 403) {
+            const serverErrors = error.response.data.errors;
 
-    closePopup() {
-      this.popupVisible = false;
-      this.$router.push('/login');
-      this.resetForm();
-    },
-    resetForm() {
-      this.data = {
-        lastName: '',
-        firstName: '',
-        role: '',
-        email: '',
-        phoneNumber: '',
-        password: '',
-      };
-      this.clearAllErrors();
-    },
-    clearError(...errors) {
-      errors.forEach((error) => {
-        this[error] = '';
+            if (serverErrors) {
+              if (serverErrors.lastName) {
+                this.lastNameError = serverErrors.lastName;
+              }
+              if (serverErrors.firstName) {
+                this.firstNameError = serverErrors.firstName;
+              }
+              if (serverErrors.role) {
+                this.roleExistError = serverErrors.role;
+              }
+              if (serverErrors.email) {
+                this.emailFormatError = serverErrors.email;
+              }
+              if (serverErrors.phoneNumber) {
+                this.phoneNumberError = serverErrors.phoneNumber;
+              }
+              if (serverErrors.password) {
+                this.passwordError = serverErrors.password;
+              }
+            }
+          } 
+          // Gérer l'erreur email déjà existant (statut 400)
+          else if (error.response.status === 400 && error.response.data.email === 'Email already exists') {
+            this.emailExistError = 'This email is already registered.';
+          } 
+          else if (error.response.status === 400 && error.response.data.role === 'Role already exists') {
+            this.roleExistError = 'This Role already registered.';
+          } 
+          // Gérer d'autres erreurs
+          else {
+            console.error("Une erreur inattendue s'est produite", error);
+          }
+        }
+      })
+      .finally(() => {
+        this.loading = false;  // Fin du chargement
       });
-    },
-    clearAllErrors() {
-      this.lastNameError = '';
-      this.firstNameError = '';
-      this.roleExistError = '';
-      this.phoneNumberError = '';
-      this.emailFormatError = '';
-      this.emailExistError = '';
-      this.passwordError = '';
-      this.confirmPasswordError = '';
-    },
-    goToLogin() {
-      this.$router.push('/login');
-    }
+  },
+  // La méthode closePopup n'est plus nécessaire ici si vous redirigez depuis registerStudent
+  closePopup() {
+    this.popupVisible = false;
+    this.resetForm();
+  },
+  resetForm() {
+    this.data = {
+      lastName: '',
+      firstName: '',
+      role: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+    };
+    this.clearAllErrors();
+  },
+  clearError(...errors) {
+    errors.forEach((error) => {
+      this[error] = '';
+    });
+  },
+  clearAllErrors() {
+    this.lastNameError = '';
+    this.firstNameError = '';
+    this.roleExistError = '';
+    this.phoneNumberError = '';
+    this.emailFormatError = '';
+    this.emailExistError = '';
+    this.passwordError = '';
+    this.confirmPasswordError = '';
+  },
+  goToLogin() {
+    this.$router.push('/login');
   }
+}
+
 };
 </script>
 
@@ -353,6 +365,19 @@ button:hover {
   cursor: pointer;
   color: #333;
 }
+
+.close-button:hover {
+  color: red;
+}
+.fas.fa-circle-notch.fa-spin {
+  margin-right: 8px; /* Adds space between the spinner and text */
+  font-size: 16px;   /* Adjusts the size of the spinner */
+  color: #ffffff;    /* Ensures the spinner matches your button text color */
+  display: inline-block;
+  vertical-align: middle;
+}
+</style>
+
 
 .close-button:hover {
   color: red;

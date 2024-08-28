@@ -1,14 +1,13 @@
-<!-- adminDashboard.vue -->
 <template>
   <div>
-  <userDashLayout>
-  <template #topbar>
-  <adminDashNavbarComponent></adminDashNavbarComponent>
-  </template>
-  <template #dashboard>
-    <component :is="CurrentView"></component>
-  </template>
-   </userDashLayout>
+    <userDashLayout>
+      <template #topbar>
+        <adminDashNavbarComponent></adminDashNavbarComponent>
+      </template>
+      <template #dashboard>
+        <component :is="CurrentView"></component>
+      </template>
+    </userDashLayout>
   </div>
 </template>
 
@@ -45,52 +44,51 @@ import messageComponent from '@/components/messageComponent.vue';
 
 
 export default {
-  components:{
+  components: {
     userDashLayout,
-    adminDashSidebarComponent,
     adminDashNavbarComponent,
     analytics: AnalyticsView,
-    inscription : childRegInfo,
-    suivi : suiviComponent,
+    inscription: childRegInfo,
+    suivi: suiviComponent,
     rapport: suiviOutcomponent,
     setting: settingComponent,
     search: searchComponent,
-    userActivity:adminComponent,
-    editphoto:editProfilComponent,
-    changeCount:changeCountComponent,
-    gererCount:gererCountComponent,
-    aide:aideComponent,
-    logout:LogoutComponent,
+    userActivity: adminComponent,
+    editphoto: editProfilComponent,
+    changeCount: changeCountComponent,
+    gererCount: gererCountComponent,
+    aide: aideComponent,
+    logout: LogoutComponent,
     Parametre: adminparaComponent,
     Review: reviewComponent,
     dailyObject: dailyObjectiveComponent,
-    report:reportComponent,
-    statistic:statisticComponent,
-    uploadPicture:uploadPictureComponent,
-    Absent:absentComponent,
+    report: reportComponent,
+    statistic: statisticComponent,
+    uploadPicture: uploadPictureComponent,
+    Absent: absentComponent,
     listOfchildren: listOfChildComponent,
-    userInfo:userEditInfoComponent,
-    ActiviteHebdomadaire:createActivityComponent,
-    weekGoal:weekGoalComponent,
-    childPicture:uploadChildPictureComponent,
-    message:messageComponent,
+    userInfo: userEditInfoComponent,
+    ActiviteHebdomadaire: createActivityComponent,
+    weekGoal: weekGoalComponent,
+    childPicture: uploadChildPictureComponent,
+    message: messageComponent,
   },
   data() {
     return {
-      CurrentView:'userActivity',
-    }
+      CurrentView: 'userActivity',
+    };
   },
-  watch:{
+  watch: {
     $route(to) {
-      this.CurrentView = to.params.id
-    }
+      this.CurrentView = to.params.id;
+    },
   },
-  // methods: {
-  //   saveData() {
-  //     // Save the data to a database or perform any required action
-  //   }
-  // }
-}
+  mounted() {
+    // Set the current view when the component is mounted based on the route
+    this.CurrentView = this.$route.params.id || 'userActivity';
+  },
+};
 </script>
+
 <style lang="scss" scoped>
 </style>
